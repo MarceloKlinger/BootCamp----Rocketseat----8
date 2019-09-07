@@ -90,4 +90,17 @@ export const List = styled.ul`
     color: #7159c1;
     text-decoration: none;
   }
+
+  button {
+    border: 0;
+    padding: 15px;
+    color: #fff;
+    background: #7159c1;
+    border-radius: 6px;
+    margin-right: 10px;
+    &:hover {
+      opacity: 0.5;
+      transition: 0.3s;
+    }
+  }
 `;

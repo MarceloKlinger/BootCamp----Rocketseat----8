@@ -12,6 +12,8 @@ export default class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    //criar a variável Error (desafio 5)
+    error: false
   };
 
   handleInputChange = e => {
@@ -40,13 +42,23 @@ export default class Main extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    this.setState({ loading: true })
+    //chamar a variável Error no handleSubmit
 
-    const { newRepo, repositories } = this.state;
+    this.setState({ loading: true, error: false })
 
-    const response = await api.get(`/repos/${newRepo}`);
+    try {
 
-    const data = {
+      const { newRepo, repositories } = this.state;
+
+      const findRepo = repositories.find(repo => repo.name === newRepo)
+
+      if(findRepo) {
+        throw new Error('Repositório duplicado');
+      }
+      const response = await api.get(`/repos/${newRepo}`);
+
+      const data = {
+
       name: response.data.full_name,
     }
 
@@ -54,12 +66,18 @@ export default class Main extends Component {
       repositories: [...repositories, data],
       newRepo:'',
       loading: false,
-    })
+    });
+
+    } catch (error) {
+      this.setState({ error: true });
+    }finally {
+      this.setState({ loading: false });
+    }
 
   }
 
   render() {
-    const { newRepo, repositories, loading } = this.state;
+    const { newRepo, repositories, loading, error } = this.state;
     return (
       <Container>
         <h1>
@@ -67,16 +85,16 @@ export default class Main extends Component {
           Repositórios
         </h1>
 
-        <Form onSubmit={this.handleSubmit} >
+        <Form onSubmit={this.handleSubmit} error={error ? 1 : 0} >
           <input
             type="text"
-            placeholder="Adicionar repsitório"
+            placeholder="Adicionar Repositório"
             value={newRepo}
             onChange={this.handleInputChange}
 
           />
 
-          <SubmitButton loading={loading}>
+          <SubmitButton loading={loading} error={error ? 1 : 0}>
             { loading ? (<FaSpinner color="FFF" size={14} />) : (<FaPlus color="#FFF" size={14} />) }
 
           </SubmitButton>
@@ -86,7 +104,7 @@ export default class Main extends Component {
           { repositories.map(repository => (
             <li key={repository.name}>
               <span>{repository.name}</span>
-              <Link to={`/repository/${encodeURIComponent(repository.name)}`}>Detalhes</Link>
+              <Link to={`/repository/${encodeURIComponent(repository.name)}`}><button>Detalhes</button></Link>
             </li>
           )) }
         </List>
