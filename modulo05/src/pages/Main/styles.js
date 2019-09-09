@@ -103,4 +103,8 @@ export const List = styled.ul`
       transition: 0.3s;
     }
   }
+  #App{
+    height: 100%;
+    margin: 0;
+  }
 `;

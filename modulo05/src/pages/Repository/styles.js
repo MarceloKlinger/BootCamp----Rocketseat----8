@@ -42,6 +42,7 @@ export const Owner = styled.header`
   }
 
   button {
+    flex: 1 0;
     border: 0;
     padding: 15px;
     color: #fff;
