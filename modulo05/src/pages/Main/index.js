@@ -47,8 +47,9 @@ export default class Main extends Component {
     this.setState({ loading: true, error: false })
 
     try {
-
       const { newRepo, repositories } = this.state;
+
+      if (newRepo === '') throw 'Você precisa indicar um repositório';
 
       const findRepo = repositories.find(repo => repo.name === newRepo)
 
