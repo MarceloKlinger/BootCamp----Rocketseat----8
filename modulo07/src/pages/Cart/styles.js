@@ -76,6 +76,9 @@ export const ProductTable = styled.table`
     border: 0px;
     padding: 6px;
   }
+  table div :empty {
+    font-size: 32px;
+  }
 `;
 
 export const Total = styled.div`
